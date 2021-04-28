@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:11.11-alpine
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+  wca:
+    build: .
+    volumes:
+      - .bash_history:/wca/.bash_history
+    # Note that you have to bind to 0.0.0.0
+    command: "bundle exec rails s  -b 0.0.0.0"
+    ports:
+      - "3000:3000"
+    volumes:
+      - "/home/john/.ssh:/wca/.ssh"
+volumes:
+  postgres_data: {}
+
